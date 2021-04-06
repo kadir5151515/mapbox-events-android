@@ -5,6 +5,41 @@ Mapbox welcomes participation and contributions from everyone.
 ## Mapbox Android Telemetry
 
 ### devel
+@Override
+  protected void onStop() {
+    super.onStop();
+
+    if (locationEngine != null) {
+        locationEngine.removeLocationUpdates(callback);
+    }
+
+    mapView.onStop();
+}
+
+@Override
+  protected void onStop() {
+    super.onStop();
+
+    if (locationEngine != null) {
+        locationEngine.removeLocationUpdates(callback);
+    }
+
+    mapView.onStop();
+}
+
+long DEFAULT_INTERVAL_IN_MILLISECONDS = 1000L;
+long DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5;
+
+LocationEngine locationEngine = LocationEngineProvider.getBestLocationEngine(this);
+
+LocationEngineRequest request = new LocationEngineRequest.Builder(DEFAULT_INTERVAL_IN_MILLISECONDS)
+	.setPriority(LocationEngineRequest.PRIORITY_NO_POWER)
+	.setMaxWaitTime(DEFAULT_MAX_WAIT_TIME)
+	.build();
+
+locationEngine.requestLocationUpdates(request, callback, getMainLooper());
+locationEngine.getLastLocation(callback);
+
 
 ### v6.1.0
 - Fix a crash on Android 11 due to a depreacted API usage [#492](https://github.com/mapbox/mapbox-events-android/pull/492)
